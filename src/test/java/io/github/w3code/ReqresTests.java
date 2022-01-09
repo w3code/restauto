@@ -43,4 +43,19 @@ public class ReqresTests {
                 .statusCode(404);
     }
 
+    @Test
+    void createUserTest() {
+        String data = "{\n    \"name\": \"morpheus\",\n    \"job\": \"leader\"\n}";
+
+        given()
+                .contentType(JSON)
+                .body(data)
+                .when()
+                .post("/api/users")
+                .then()
+                .statusCode(201)
+                .body("name", is("morpheus"))
+                .body("job", is("leader"));
+    }
+
 }
