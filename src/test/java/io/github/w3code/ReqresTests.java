@@ -58,4 +58,19 @@ public class ReqresTests {
                 .body("job", is("leader"));
     }
 
+    @Test
+    void updateUserTest() {
+        String data = "{\n    \"name\": \"morpheus\",\n    \"job\": \"zion resident\"\n}";
+
+        given()
+                .contentType(JSON)
+                .body(data)
+                .when()
+                .put("/api/users/2")
+                .then()
+                .statusCode(200)
+                .body("name", is("morpheus"))
+                .body("job", is("zion resident"));
+    }
+
 }
