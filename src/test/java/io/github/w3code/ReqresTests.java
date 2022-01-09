@@ -13,4 +13,14 @@ public class ReqresTests {
         RestAssured.baseURI = "https://reqres.in/";
     }
 
+    @Test
+    void listUsersTest() {
+        given()
+                .when()
+                .get("/api/users")
+                .then()
+                .statusCode(200)
+                .body("total", is(12));
+    }
+
 }
