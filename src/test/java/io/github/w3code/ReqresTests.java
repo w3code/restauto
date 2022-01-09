@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 
 public class ReqresTests {
@@ -21,6 +22,16 @@ public class ReqresTests {
                 .then()
                 .statusCode(200)
                 .body("total", is(12));
+    }
+
+    @Test
+    void singleUserTest() {
+        given()
+                .when()
+                .get("/api/users/2")
+                .then()
+                .statusCode(200)
+                .body("data.id", is(2));
     }
 
 }
