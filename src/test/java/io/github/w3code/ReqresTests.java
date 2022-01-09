@@ -34,4 +34,13 @@ public class ReqresTests {
                 .body("data.id", is(2));
     }
 
+    @Test
+    void singleUserNotFoundTest() {
+        given()
+                .when()
+                .get("/api/users/23")
+                .then()
+                .statusCode(404);
+    }
+
 }
