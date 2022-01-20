@@ -1,17 +1,25 @@
 plugins {
     id 'java-library'
+    id 'io.qameta.allure' version '2.8.1'
 }
 
 repositories {
     mavenCentral()
 }
 
-def junitVersion = "5.8.2"
+def allureVersion = "2.14.0",
+    junitVersion = "5.8.2",
+    selenideVersion = '6.1.2'
 
 dependencies {
     testImplementation(
             "io.rest-assured:rest-assured:4.4.0",
-            "org.assertj:assertj-core:3.21.0",
+            "com.codeborne:selenide:$selenideVersion",
+            "io.qameta.allure:allure-rest-assured:$allureVersion",
+            "com.github.javafaker:javafaker:1.0.2",
+            "org.aeonbits.owner:owner:1.0.12",
+            "org.jsoup:jsoup:1.14.3",
+            "org.assertj:assertj-core:3.22.0",
             "org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 }
