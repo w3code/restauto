@@ -4,27 +4,38 @@ import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Cookie;
 
 import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.github.w3code.api.AuthorizationAPI.getAuthorizationCookie;
-import static io.github.w3code.api.AuthorizationAPI.userAuthorization;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
 
 public class DemowebshopTests extends TestBase {
+    private static String authorizationCookie;
+
+    @BeforeAll
+    static void userAuthorization() {
+        step("Get cookie by api and set it to browser", () -> {
+            authorizationCookie = getAuthorizationCookie(config.userLogin(), config.userPassword());
+
+            open("/Themes/DefaultClean/Content/images/logo.png");
+
+            getWebDriver().manage().addCookie(
+                    new Cookie("NOPCOMMERCE.AUTH", authorizationCookie));
+        });
+    }
 
     @Test
     @DisplayName("User login test")
     void userLoginTest() {
-        step("Get cookie by api and set it to browser", () ->
-                userAuthorization(config.userLogin(), config.userPassword()));
-
         step("Open main page", () ->
                 open(config.webURL()));
 
@@ -40,14 +51,11 @@ public class DemowebshopTests extends TestBase {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
 
-        step("Get cookie by api and set it to browser", () ->
-                userAuthorization(config.userLogin(), config.userPassword()));
-
         step("Modify firstname and lastname in profile", () -> {
             //Get response from info page
             Response response =
                     (Response) given()
-                            .cookie("NOPCOMMERCE.AUTH", getAuthorizationCookie())
+                            .cookie("NOPCOMMERCE.AUTH", authorizationCookie)
                             .when()
                             .get("/customer/info")
                             .then()
@@ -63,7 +71,7 @@ public class DemowebshopTests extends TestBase {
             //Send request for firstname and lastname change
             given()
                     .contentType("application/x-www-form-urlencoded;")
-                    .cookies("NOPCOMMERCE.AUTH", getAuthorizationCookie(), "__RequestVerificationToken", cookieVerificationToken)
+                    .cookies("NOPCOMMERCE.AUTH", authorizationCookie, "__RequestVerificationToken", cookieVerificationToken)
                     .body("__RequestVerificationToken=" + formVerificationToken +
                             "&Gender=M" +
                             "&FirstName=" + firstName +
