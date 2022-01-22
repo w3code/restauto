@@ -4,7 +4,6 @@ import com.github.javafaker.Faker;
 import io.restassured.response.Response;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Cookie;
@@ -19,23 +18,18 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 
 public class DemowebshopTests extends TestBase {
-    private static String authorizationCookie;
-
-    @BeforeAll
-    static void userAuthorization() {
-        step("Get cookie by api and set it to browser", () -> {
-            authorizationCookie = getAuthorizationCookie(config.userLogin(), config.userPassword());
-
-            open("/Themes/DefaultClean/Content/images/logo.png");
-
-            getWebDriver().manage().addCookie(
-                    new Cookie("NOPCOMMERCE.AUTH", authorizationCookie));
-        });
-    }
 
     @Test
     @DisplayName("User login test")
     void userLoginTest() {
+        String authorizationCookie = getAuthorizationCookie(config.userLogin(), config.userPassword());
+
+        open("/Themes/DefaultClean/Content/images/logo.png");
+
+        getWebDriver().manage().addCookie(
+                new Cookie("NOPCOMMERCE.AUTH", authorizationCookie));
+
+
         step("Open main page", () ->
                 open(config.webURL()));
 
@@ -46,6 +40,14 @@ public class DemowebshopTests extends TestBase {
     @Test
     @DisplayName("Modify firstname and lastname in profile test")
     void modifyProfileTest() {
+        //Get cookie by api and set it to browser
+        String authorizationCookie = getAuthorizationCookie(config.userLogin(), config.userPassword());
+
+        open("/Themes/DefaultClean/Content/images/logo.png");
+
+        getWebDriver().manage().addCookie(
+                new Cookie("NOPCOMMERCE.AUTH", authorizationCookie));
+
         //Generate fake firstname and lastname
         Faker faker = new Faker();
         String firstName = faker.name().firstName();
