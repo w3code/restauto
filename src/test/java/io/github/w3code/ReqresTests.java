@@ -2,6 +2,7 @@ package io.github.w3code;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -15,6 +16,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     void listUsersTest() {
         given()
                 .when()
@@ -25,6 +27,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     void singleUserTest() {
         given()
                 .when()
@@ -35,6 +38,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     void singleUserNotFoundTest() {
         given()
                 .when()
@@ -44,6 +48,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     void createUserTest() {
         String data = "{\n    \"name\": \"morpheus\",\n    \"job\": \"leader\"\n}";
 
@@ -59,6 +64,7 @@ public class ReqresTests {
     }
 
     @Test
+    @Disabled
     void updateUserTest() {
         String data = "{\n    \"name\": \"morpheus\",\n    \"job\": \"zion resident\"\n}";
 
@@ -72,5 +78,4 @@ public class ReqresTests {
                 .body("name", is("morpheus"))
                 .body("job", is("zion resident"));
     }
-
 }
