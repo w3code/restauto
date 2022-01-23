@@ -14,6 +14,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 import static io.github.w3code.api.AuthorizationAPI.getAuthorizationCookie;
+import static io.github.w3code.filters.CustomLogFilter.customLogFilter;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 
@@ -57,6 +58,7 @@ public class DemowebshopTests extends TestBase {
             //Get response from info page
             Response response =
                     (Response) given()
+                            .filter(customLogFilter().withCustomTemplates())
                             .cookie("NOPCOMMERCE.AUTH", authorizationCookie)
                             .when()
                             .get("/customer/info")
@@ -72,13 +74,14 @@ public class DemowebshopTests extends TestBase {
 
             //Send request for firstname and lastname change
             given()
+                    .filter(customLogFilter().withCustomTemplates())
                     .contentType("application/x-www-form-urlencoded;")
                     .cookies("NOPCOMMERCE.AUTH", authorizationCookie, "__RequestVerificationToken", cookieVerificationToken)
                     .body("__RequestVerificationToken=" + formVerificationToken +
                             "&Gender=M" +
                             "&FirstName=" + firstName +
                             "&LastName=" + lastName +
-                            "&Email=webshopuser%40email365.com" +
+                            "&Email=" + config.userLogin() +
                             "&save-info-button=Save")
                     .when()
                     .post("/customer/info")
