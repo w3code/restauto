@@ -24,10 +24,8 @@ public class TestBase {
         String login = credentials.login();
         String password = credentials.password();
 
-        String selenoid_url = System.getProperty("selenoid_url", "url");
-
         Configuration.browserSize = "1920x1080";
-        Configuration.remote = format("https://%s:%s@" + selenoid_url, login, password);
+        Configuration.remote = format("https://%s:%s@selenoid.autotests.cloud/wd/hub/", login, password);
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("enableVNC", true);
