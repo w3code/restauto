@@ -30,6 +30,7 @@ dependencies {
             "org.aeonbits.owner:owner:1.0.12",
             "org.jsoup:jsoup:1.14.3",
             "org.assertj:assertj-core:3.22.0",
+            "org.aspectj:aspectjweaver:1.9.7",
             "org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 }
