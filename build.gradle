@@ -1,5 +1,6 @@
 plugins {
-    id 'java-library'
+    id 'java'
+    id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 repositories {
@@ -9,15 +10,20 @@ repositories {
 def junitVersion = "5.8.2"
 
 dependencies {
+    implementation 'org.projectlombok:lombok:1.18.22'
     testImplementation(
-            "io.rest-assured:rest-assured:4.4.0",
-            "org.assertj:assertj-core:3.21.0",
+            'io.rest-assured:rest-assured:4.5.0',
+            'org.assertj:assertj-core:3.22.0',
+            'com.github.javafaker:javafaker:1.0.2',
+            'com.fasterxml.jackson.core:jackson-databind:2.13.1',
             "org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 }
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType(Test) {
